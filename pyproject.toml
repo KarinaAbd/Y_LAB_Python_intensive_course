@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "y-lab-python-intensive-course"
+version = "0.1.0"
+description = ""
+authors = ["Karina Abdullaeva"]
+readme = "README.md"
+repository = "https://github.com/KarinaAbd/Y_LAB_Python_intensive_course"
+packages = [{include = "menu_app"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.109.0"
+uvicorn = "^0.26.0"
+sqlalchemy = "^2.0.25"
+psycopg2-binary = "^2.9.9"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
