@@ -19,7 +19,9 @@ def get_db():
 
 
 @app.get("/menus", response_model=list[schemas.MenuRead])
-def get_all_menus(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_all_menus(skip: int = 0,
+                  limit: int = 100,
+                  db: Session = Depends(get_db)):
     return crud.read_menus(db, skip=skip, limit=limit)
 
 
@@ -46,14 +48,18 @@ def get_menu(menu_id: int, db: Session = Depends(get_db)):
 
 
 @app.patch("/menus/{menu_id}", response_model=schemas.MenuRead)
-def patch_menu(menu_id: int, updated_menu: schemas.MenuCreate, db: Session = Depends(get_db)):
+def patch_menu(menu_id: int,
+               updated_menu: schemas.MenuCreate,
+               db: Session = Depends(get_db)):
     db_menu = crud.get_menu_by_id(db, menu_id=menu_id)
     if db_menu is None:
         raise HTTPException(
             status_code=404,
             detail="Menu not found",
         )
-    return crud.update_menu(db=db, current_menu=db_menu, updated_menu=updated_menu)
+    return crud.update_menu(db=db,
+                            current_menu=db_menu,
+                            updated_menu=updated_menu)
 
 
 @app.delete("/menus/{menu_id}", response_model=list[schemas.MenuRead])
