@@ -51,7 +51,8 @@ def patch_menu(menu_id: str,
                updated_menu: schemas.MenuCreate,
                db: Session = Depends(get_db)):
     current_menu = menu_crud.get_menu_by_id(db, menu_id=menu_id)
-    updated_title = menu_crud.get_menu_by_title(db, menu_title=updated_menu.title)
+    updated_title = menu_crud.get_menu_by_title(db,
+                                                menu_title=updated_menu.title)
     if current_menu is None:
         raise HTTPException(
             status_code=404,
@@ -64,8 +65,8 @@ def patch_menu(menu_id: str,
         )
 
     return menu_crud.update_menu(db=db,
-                            current_menu=current_menu,
-                            updated_menu=updated_menu)
+                                 current_menu=current_menu,
+                                 updated_menu=updated_menu)
 
 
 @menu_router.delete("/{menu_id}", response_model=list[schemas.MenuRead])
