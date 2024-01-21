@@ -50,14 +50,21 @@ def get_menu(menu_id: str, db: Session = Depends(get_db)):
 def patch_menu(menu_id: str,
                updated_menu: schemas.MenuCreate,
                db: Session = Depends(get_db)):
-    db_menu = crud.get_menu_by_id(db, menu_id=menu_id)
-    if db_menu is None:
+    current_menu = crud.get_menu_by_id(db, menu_id=menu_id)
+    updated_title = crud.get_menu_by_title(db, menu_title=updated_menu.title)
+    if current_menu is None:
         raise HTTPException(
             status_code=404,
             detail="Menu not found",
         )
+    elif updated_title:
+        raise HTTPException(
+            status_code=400,
+            detail="A menu with that title already exists"
+        )
+
     return crud.update_menu(db=db,
-                            current_menu=db_menu,
+                            current_menu=current_menu,
                             updated_menu=updated_menu)
 
 
