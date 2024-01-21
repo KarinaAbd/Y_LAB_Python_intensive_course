@@ -2,19 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from .. import schemas
-from ..database import SessionLocal
+from ..database import get_db
 from . import submenu_crud
 
 submenu_router = APIRouter(prefix="/api/v1/menus/{menu_id}/submenus")
-
-
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 @submenu_router.get("/", response_model=list[schemas.SubmenuRead])
