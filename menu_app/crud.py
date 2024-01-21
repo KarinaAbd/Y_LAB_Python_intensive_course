@@ -3,17 +3,36 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 
-def get_menus(db: Session, skip: int = 0, limit: int = 100):
+def create_menu(db: Session, menu: schemas.MenuCreate):
+    new_menu = models.Menu(title=menu.title)
+    db.add(new_menu)
+    db.commit()
+    db.refresh(new_menu)
+    return new_menu
+
+
+def read_menus(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Menu).offset(skip).limit(limit).all()
 
 
-def create_menu(db: Session, menu: schemas.MenuCreate):
-    db_menu = models.Menu(title=menu.title)
-    db.add(db_menu)
-    db.commit()
-    db.refresh(db_menu)
-    return db_menu
+def get_menu_by_title(db: Session, menu_title: str):
+    return db.query(models.Menu).filter(models.Menu.title == menu_title).first()
 
 
 def get_menu_by_id(db: Session, menu_id: int):
     return db.query(models.Menu).filter(models.Menu.id == menu_id).first()
+
+
+def update_menu(db: Session, current_menu: schemas.MenuRead, updated_menu: schemas.MenuCreate):
+    current_menu.title = updated_menu.title
+    db.merge(current_menu)
+    db.commit()
+    db.refresh(current_menu)
+    return current_menu
+
+
+def delete_menu(db: Session, menu_id: int):
+    menu = get_menu_by_id(db=db, menu_id=menu_id)
+    db.delete(menu)
+    db.commit()
+    return read_menus(db=db)
