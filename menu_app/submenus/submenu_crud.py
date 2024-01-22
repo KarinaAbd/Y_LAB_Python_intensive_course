@@ -15,7 +15,9 @@ def create_submenu(db: Session, menu_id: str, submenu: schemas.SubmenuCreate):
 
 
 def read_submenus(db: Session, menu_id: str, skip: int = 0, limit: int = 100):
-    return db.query(Submenu).filter(Submenu.menu_id == menu_id).offset(skip).limit(limit).all()
+    return db.query(Submenu).filter(
+        Submenu.menu_id == menu_id
+    ).offset(skip).limit(limit).all()
 
 
 def get_submenu_by_title(db: Session, submenu_title: str):
@@ -38,7 +40,7 @@ def update_submenu(db: Session,
 
 
 def delete_submenu(db: Session, menu_id: str, submenu_id: str):
-    menu = get_submenu_by_id(db=db, submenu_id=submenu_id)
-    db.delete(menu)
+    submenu = get_submenu_by_id(db=db, submenu_id=submenu_id)
+    db.delete(submenu)
     db.commit()
-    return read_submenus(db=db, menu_id=menu_id)
+    return read_submenus(db, menu_id)

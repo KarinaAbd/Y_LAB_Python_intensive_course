@@ -3,7 +3,9 @@ from sqlalchemy.orm import Session
 
 from .. import schemas
 from ..database import get_db
+from ..menus.menu_crud import get_menu_by_id
 from . import submenu_crud
+
 
 submenu_router = APIRouter(prefix="/api/v1/menus/{menu_id}/submenus")
 
@@ -12,21 +14,22 @@ submenu_router = APIRouter(prefix="/api/v1/menus/{menu_id}/submenus")
 def get_all_submenus(menu_id: str, skip: int = 0,
                      limit: int = 100,
                      db: Session = Depends(get_db)):
-    return submenu_crud.read_submenus(db, menu_id, skip=skip, limit=limit)
+    if find_menu(menu_id, db):
+        return submenu_crud.read_submenus(db, menu_id, skip=skip, limit=limit)
 
 
 @submenu_router.post("/", response_model=schemas.SubmenuRead, status_code=201)
 def post_submenu(submenu: schemas.SubmenuCreate,
                  menu_id: str,
                  db: Session = Depends(get_db)):
-    db_submenu = submenu_crud.get_submenu_by_title(db=db,
-                                                   submenu_title=submenu.title)
-    if db_submenu:
-        raise HTTPException(
-            status_code=400,
-            detail="A submenu with that title already exists"
-        )
-    return submenu_crud.create_submenu(db=db, menu_id=menu_id, submenu=submenu)
+    if find_menu(menu_id, db):
+        db_submenu = submenu_crud.get_submenu_by_title(db, submenu.title)
+        if db_submenu:
+            raise HTTPException(
+                status_code=400,
+                detail="A submenu with that title already exists"
+            )
+        return submenu_crud.create_submenu(db, menu_id, submenu)
 
 
 @submenu_router.get("/{submenu_id}", response_model=schemas.SubmenuRead)
@@ -77,3 +80,13 @@ def delete_submenu(menu_id: str, submenu_id: str,
     return submenu_crud.delete_submenu(db=db,
                                        menu_id=menu_id,
                                        submenu_id=submenu_id)
+
+
+def find_menu(menu_id: str, db: Session = Depends(get_db)):
+    current_menu = get_menu_by_id(db, menu_id)
+    if not current_menu:
+        raise HTTPException(
+            status_code=404,
+            detail="menu not found",
+        )
+    return current_menu
