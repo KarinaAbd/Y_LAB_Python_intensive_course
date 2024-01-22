@@ -17,7 +17,7 @@ class Dish(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     title = Column(String(50), nullable=False, unique=True)
     description = Column(Text)
-    price = Column(Numeric(scale=2), nullable=False)
+    price = Column(Numeric(precision=10), nullable=False)
     submenu_id = Column(UUID(as_uuid=True), ForeignKey('submenus.id'))
     submenu = relationship('Submenu', back_populates="dishes")
 

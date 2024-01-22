@@ -1,5 +1,7 @@
-from pydantic import BaseModel
+from decimal import Decimal
 from uuid import UUID
+
+from pydantic import BaseModel, Field
 
 
 class MenuBase(BaseModel):
@@ -48,7 +50,7 @@ class DishBase(BaseModel):
     """Базовая схема для блюда"""
     title: str
     description: str
-    price: float
+    price: Decimal = Field(max_digits=5, decimal_places=2)
 
 
 class DishCreate(DishBase):
