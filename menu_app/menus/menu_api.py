@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-
 from .. import schemas
 from ..database import get_db
 from . import menu_crud
@@ -32,7 +31,7 @@ def get_menu(menu_id: str, db: Session = Depends(get_db)):
     if db_menu is None:
         raise HTTPException(
             status_code=404,
-            detail="Menu not found"
+            detail="menu not found"
         )
     return db_menu
 
@@ -47,7 +46,7 @@ def patch_menu(menu_id: str,
     if current_menu is None:
         raise HTTPException(
             status_code=404,
-            detail="Menu not found",
+            detail="menu not found",
         )
     elif updated_title:
         raise HTTPException(
@@ -66,6 +65,6 @@ def delete_menu(menu_id: str, db: Session = Depends(get_db)):
     if db_menu is None:
         raise HTTPException(
             status_code=404,
-            detail="Menu not found",
+            detail="menu not found",
         )
     return menu_crud.delete_menu(db=db, menu_id=menu_id)

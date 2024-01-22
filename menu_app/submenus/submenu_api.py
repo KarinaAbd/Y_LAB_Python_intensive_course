@@ -6,7 +6,6 @@ from ..database import get_db
 from ..menus.menu_crud import get_menu_by_id
 from . import submenu_crud
 
-
 submenu_router = APIRouter(prefix="/api/v1/menus/{menu_id}/submenus")
 
 
