@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 from uuid import UUID
 
 
@@ -17,10 +17,7 @@ class MenuRead(MenuBase):
     """Схема для просмотра меню"""
     id: UUID
     submenus_count: int
-
-    @validator('id')
-    def validate_id(cls, value: UUID) -> str:
-        return str(value)
+    dishes_count: int
 
     class Config:
         orm_mode = True
@@ -32,23 +29,37 @@ class SubmenuBase(BaseModel):
     description: str
 
 
-class SubmenuCreate(MenuBase):
+class SubmenuCreate(SubmenuBase):
     """Схема для добавления нового подменю"""
     pass
 
 
-class SubmenuRead(MenuBase):
+class SubmenuRead(SubmenuBase):
     """Схема для просмотра подменю"""
     id: UUID
     menu_id: UUID
+    dishes_count: int
 
-    @validator('id')
-    def validate_submenu_id(cls, value: UUID) -> str:
-        return str(value)
+    class Config:
+        orm_mode = True
 
-    @validator('menu_id')
-    def validate_menu_id(cls, value: UUID) -> str:
-        return str(value)
+
+class DishBase(BaseModel):
+    """Базовая схема для блюда"""
+    title: str
+    description: str
+    price: float
+
+
+class DishCreate(DishBase):
+    """Схема для добавления нового подменю"""
+    pass
+
+
+class DishRead(DishBase):
+    """Схема для просмотра подменю"""
+    id: UUID
+    submenu_id: UUID
 
     class Config:
         orm_mode = True
