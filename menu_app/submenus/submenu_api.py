@@ -84,7 +84,7 @@ def delete_submenu(menu_id: str, submenu_id: str,
 
 def find_menu(menu_id: str, db: Session = Depends(get_db)):
     current_menu = get_menu_by_id(db, menu_id)
-    if not current_menu:
+    if current_menu is None:
         raise HTTPException(
             status_code=404,
             detail="menu not found",
