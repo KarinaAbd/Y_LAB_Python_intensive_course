@@ -40,7 +40,7 @@ def update_submenu(db: Session,
 
 
 def delete_submenu(db: Session, menu_id: str, submenu_id: str):
-    submenu = get_submenu_by_id(db=db, submenu_id=submenu_id)
+    submenu = get_submenu_by_id(db, submenu_id)
     db.delete(submenu)
     db.commit()
     return read_submenus(db, menu_id)

@@ -54,12 +54,12 @@ class DishBase(BaseModel):
 
 
 class DishCreate(DishBase):
-    """Схема для добавления нового подменю"""
+    """Схема для добавления нового блюда"""
     pass
 
 
 class DishRead(DishBase):
-    """Схема для просмотра подменю"""
+    """Схема для просмотра блюда"""
     id: UUID
     submenu_id: UUID
 

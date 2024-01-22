@@ -1,7 +1,6 @@
 from uuid import uuid4
 
 from sqlalchemy import Column, ForeignKey, Numeric, String, Text
-# https://postgrespro.ru/docs/postgresql/9.5/datatype-uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import column_property, relationship
 from sqlalchemy.sql import func, select

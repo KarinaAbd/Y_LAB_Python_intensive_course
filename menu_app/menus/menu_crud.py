@@ -36,7 +36,7 @@ def update_menu(db: Session,
 
 
 def delete_menu(db: Session, menu_id: str):
-    menu = get_menu_by_id(db=db, menu_id=menu_id)
+    menu = get_menu_by_id(db, menu_id)
     db.delete(menu)
     db.commit()
-    return read_menus(db=db)
+    return read_menus(db)

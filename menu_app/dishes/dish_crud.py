@@ -35,6 +35,7 @@ def update_dish(db: Session,
     current_dish.title = updated_dish.title
     current_dish.description = updated_dish.description
     current_dish.price = updated_dish.price
+
     db.merge(current_dish)
     db.commit()
     db.refresh(current_dish)
